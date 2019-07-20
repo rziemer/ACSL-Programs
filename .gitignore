@@ -1,0 +1,5 @@
+## Ignore Visual Studio binary files
+
+[Oo]bj/
+[Bb]in/
+.vscode/
