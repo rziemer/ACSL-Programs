@@ -20,9 +20,9 @@ namespace Program5
                 char[] delimiters = {','};
                 string[] parsedString = fileString[fileloop].Split(delimiters);
 
-                acslURL sourceURL = new acslURL(parsedString[0].Trim());
-                acslURL destinationURL = new acslURL(parsedString[1].Trim());
-                Console.WriteLine(sourceURL.mergeURL(destinationURL).ToString());
+                int depth = int.Parse(parsedString[0].Trim());
+                string treeString = parsedString[1].Trim();
+                Console.WriteLine(depth.ToString() + " :: " + treeString);
             }
         }
     }
