@@ -18,3 +18,4 @@ www.cs.state.edu/, index.html
 test.html, index.html
 test, index
 http://www.microsoft.com/azure/, test.txt
+http://www.cs.state.edu/cs101/exams/temp/final.html, ././.././../ee543/missive.html

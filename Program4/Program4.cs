@@ -12,8 +12,25 @@ namespace Program4
         private bool hasProtocol = false;
         private string host = "";
         private bool hasHost = false;
-        private string[] directories = null;
+        public string[] directories = null;
         
+        public void setProtocol(string newProtocol)
+        {
+            protocol = newProtocol;
+            hasProtocol = true;
+        }
+
+        public void setHost(string newHost)
+        {
+            host = newHost;
+            hasHost = true;
+        }
+
+        public void setDirectories(string[] newDirectories)
+        {
+            directories = newDirectories;
+        }
+
         public acslURL(string inputURL)
         {
             string workingURL = inputURL;
@@ -59,6 +76,46 @@ namespace Program4
         public acslURL mergeURL(acslURL destinationURL)
         {
             acslURL returnURL = new acslURL(this.ToString());
+            if (destinationURL.hasProtocol)
+                returnURL.setProtocol(destinationURL.protocol);
+            if (destinationURL.hasHost)
+                returnURL.setHost(destinationURL.host);
+            else
+            {
+                bool done = false;
+                int sourcePos = this.directories.Length - 1;
+                int destPos = 0;
+                while (!done)
+                {
+                    if (destinationURL.directories[destPos] == "")
+                    {
+                        sourcePos = 0;
+                        destPos++;
+                        done = true;
+                    }
+                    else
+                        if (destinationURL.directories[destPos] == ".")
+                            destPos++;
+                        else
+                            if (destinationURL.directories[destPos] == "..")
+                            {
+                                destPos++;
+                                sourcePos--;
+                            }
+                            else
+                                done = true;
+                    if (destPos == destinationURL.directories.Length)
+                        done = true;
+                    if (sourcePos == 0)
+                        done = true;
+                }   
+                string[] newDirectories = new string[sourcePos + destinationURL.directories.Length - destPos];
+                for (int loop = 0; loop < sourcePos; loop++)
+                    newDirectories[loop] = this.directories[loop];
+                for (int loop = sourcePos; loop < newDirectories.Length; loop++)
+                    newDirectories[loop] = destinationURL.directories[loop - sourcePos + destPos];
+                returnURL.setDirectories(newDirectories);
+            }
             return returnURL;
         }
     }
@@ -80,6 +137,7 @@ namespace Program4
 
                 acslURL sourceURL = new acslURL(parsedString[0].Trim());
                 acslURL destinationURL = new acslURL(parsedString[1].Trim());
+                Console.WriteLine(sourceURL.mergeURL(destinationURL).ToString());
             }
         }
     }
